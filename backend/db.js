@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 async function mongoDbConnect() {
 try {
     await mongoose.connect('mongodb+srv://yusayr:H1R72W5PDSkRFFft@cluster0.o9g2cko.mongodb.net/paytm');
-    console.log("Success")
+    
   } catch (error) {
     console.log(error);
   }

@@ -14,7 +14,7 @@ const validatedSchema = z.object({
 })
 
 //whatever routes are defined in user will go through api/v1/user
-router.post("/signup", async(req,res)=>{
+router.post("/signup", async (req, res) => {
     const result = validatedSchema.safeParse(req.body)
     if (!result.success) {
         return res.json({
@@ -23,7 +23,7 @@ router.post("/signup", async(req,res)=>{
     }
     const username = req.body.username
 
-    const userExists = await User.findOne({username:username})
+    const userExists = await User.findOne({ username: username })
 
     if (userExists) {
         return res.status(411).json("User already exists")
@@ -38,20 +38,20 @@ router.post("/signup", async(req,res)=>{
         })
 
         const userId = newUser._id
-        const token = jwt.sign({userId}, JWT_SECRET_KEY)
-        
+        const token = jwt.sign({ userId }, JWT_SECRET_KEY)
+
         return res.json({
             msg: "Post request successful",
             json: token
         })
     }
-    catch(err) {
+    catch (err) {
         console.log(err)
         res.json({
             msg: "User could not be created"
         })
     }
-   
+
 })
 
 const signinBody = z.object({
@@ -59,10 +59,10 @@ const signinBody = z.object({
     password: z.string().min(6)
 })
 //we dont use authMiddleware during signin. Only for get requests for different routes after signing in to the page
-router.post("/signin", async(req,res) => {
+router.post("/signin", async (req, res) => {
     const result = signinBody.safeParse(req.body)
 
-    if(!result.success){
+    if (!result.success) {
         return res.status(411).json({
             message: "Email Already taken / Incorrect Inputs"
         })
@@ -87,7 +87,59 @@ router.post("/signin", async(req,res) => {
     res.status(411).json({
         msg: "Error while logging in"
     })
-    
+
 })
+
+const updateBody = z.object({
+    password: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+})
+//to update password/firstname/lastname
+router.put("/", authMiddleware, async (req, res) => {
+    const result = updateBody.safeParse(req.body)
+    if (!result.success) {
+        res.json({
+            msg: "Validation Failed"
+        })
+    }
+
+    const updatedUser = await User.updateOne(
+        { _id: req.userId }, req.body
+    )
+
+    res.json({
+        updated: updatedUser,
+        msg: "Updated Successfully"
+    })
+})
+
+//to search for other users 
+router.get("/bulk", async (req, res) => {
+    const filter = req.query.filter || "";
+
+    try {
+        const users = await User.find({
+            $or: [{firstName: {"$regex": filter, "$options": "i"}}, 
+            {lastName: {"$regex": filter, "$options": "i"}}]
+        })
+
+        res.json({
+            user: users.map(user => ({
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                _id: user._id
+            }))
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            error: err.message
+        })
+    }
+
+})
+
 
 module.exports = router;
