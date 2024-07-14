@@ -5,6 +5,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken")
 const { JWT_SECRET_KEY } = require("../config")
 const { authMiddleware } = require("./middleware")
+const { Account } = require("../db")
 
 const validatedSchema = z.object({
     username: z.string().email(),
@@ -39,6 +40,13 @@ router.post("/signup", async (req, res) => {
 
         const userId = newUser._id
         const token = jwt.sign({ userId }, JWT_SECRET_KEY)
+
+        //add random balance amount upon user sign up
+        await Account.create({
+            userId: userId,
+            username: username,
+            balance : Math.random() * 10000
+        })
 
         return res.json({
             msg: "Post request successful",
@@ -115,7 +123,7 @@ router.put("/", authMiddleware, async (req, res) => {
 })
 
 //to search for other users 
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter || "";
 
     try {
@@ -138,7 +146,6 @@ router.get("/bulk", async (req, res) => {
             error: err.message
         })
     }
-
 })
 
 
