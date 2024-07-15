@@ -19,13 +19,13 @@ export default function Signup() {
     const signupFunction = async() => {
         console.log(username, password)
         try {
-            await axios.post("http://localhost:3000/api/v1/user/signup", {
+            const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
                 username,
                 firstName,
                 lastName,
                 password
             });
-            console.log("success")
+            localStorage.setItem("token", "Bearer " + response.data.token)
         }
         catch(err) {
             console.log(err)
