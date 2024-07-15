@@ -16,6 +16,22 @@ export default function Signup() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const signupFunction = async() => {
+        console.log(username, password)
+        try {
+            await axios.post("http://localhost:3000/api/v1/user/signup", {
+                username,
+                firstName,
+                lastName,
+                password
+            });
+            console.log("success")
+        }
+        catch(err) {
+            console.log(err)
+        }
+    }
+
     return (
         <div className="bg-slate-300 flex justify-center h-screen">
             <div className="bg-white flex-col justify-center items-center w-80 h-[90%] align-middle my-10 rounded-lg p-4">
@@ -28,7 +44,7 @@ export default function Signup() {
                     <InputBox onChange={e=> setUsername(e.target.value)} label="Email" placeholder=" john@gmail.com" />
                     <Password onChange={e=> setPassword(e.target.value)}  label="Password" placeholder="123456" />
                     <div className="pt-2">
-                        <Button label={"Sign up"} />
+                        <Button onClick={signupFunction} label={"Sign up"} />
                     </div>
                     <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
                 </div>
