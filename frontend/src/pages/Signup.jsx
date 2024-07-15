@@ -7,6 +7,7 @@ import { Button } from "../components/Button.jsx"
 import { BottomWarning } from "../components/BottomWarning.jsx"
 import { useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -15,9 +16,9 @@ export default function Signup() {
     const [lastName, setlastName] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
     const signupFunction = async() => {
-        console.log(username, password)
         try {
             const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
                 username,
@@ -25,7 +26,13 @@ export default function Signup() {
                 lastName,
                 password
             });
-            localStorage.setItem("token", "Bearer " + response.data.token)
+            if (response.status === 200) { // Check for successful signup
+                localStorage.setItem("token", response.data.token);
+                console.log(response.data.token);
+                navigate("/dashboard");
+            } else {
+                console.log('Signup failed:', response.data.message);
+            }
         }
         catch(err) {
             console.log(err)

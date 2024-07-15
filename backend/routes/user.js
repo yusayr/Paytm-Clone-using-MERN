@@ -50,7 +50,7 @@ router.post("/signup", async (req, res) => {
 
         return res.json({
             msg: "Post request successful",
-            json: token
+            token: token
         })
     }
     catch (err) {
