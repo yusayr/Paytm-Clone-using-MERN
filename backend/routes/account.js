@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 //apply transactions here
 
 // to get user balance
-router.get("/balance", async (req,res)=> {
+router.get("/balance", authMiddleware, async (req,res)=> {
     const userId = req.body.userId
 
     if (!userId) {
@@ -36,7 +36,7 @@ router.get("/balance", async (req,res)=> {
 })
 
 //to transfer money to another account
-router.post("/transfer", async(req, res)=> {
+router.post("/transfer", authMiddleware, async(req, res)=> {
     const session = await mongoose.startSession();
     session.startTransaction();
     const {amount, to, userId} = req.body;
