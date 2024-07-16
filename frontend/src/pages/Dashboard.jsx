@@ -4,10 +4,15 @@ import { AppBar } from "../components/AppBar"
 import { Balance } from "../components/Balance"
 import { Users } from "../components/Users"
 import axios from "axios"
-
+import useAuth from "../components/useAuth"
+import { useNavigate } from "react-router-dom"
 
 export default function Dashboard() {
-const [balance, setBalance] = useState(0)
+    const [balance, setBalance] = useState(0)
+    const token = useAuth();
+    const navigate = useNavigate()
+
+
 const getBalance = async() => {
         try {
             const response =await axios.post("http://localhost:3000/api/v1/account/balance", 
@@ -20,17 +25,18 @@ const getBalance = async() => {
             })
             const roundedBalance = Number(response.data.balance).toFixed(2);
             setBalance(roundedBalance)
-            
-            console.log(response.data)
         }
         catch(err) {
             console.log(err)
+            if (err.response && err.response.status===403) {
+                navigate("/signin")
+            }
         }}
     
-    useEffect(()=> {
-            getBalance();
-        }, [setBalance])
-
+        useEffect(()=> {
+                getBalance();
+            }, [token, setBalance])
+        
         
 
     return (

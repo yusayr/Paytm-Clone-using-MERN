@@ -7,19 +7,26 @@ import { useNavigate } from "react-router-dom"
 export const Users = () => {
     const [users, setUsers] = useState([])
     const [filter, setFilter] = useState([])
+    const loggedInUserId = localStorage.getItem("userId")
 
-    useEffect(()=> {
+    const filteredList = async() => {
+        const filter = "";
         const token = localStorage.getItem("token")
-        axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
+        const response = await axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
-            
         })
-        .then(res=> {
-            setUsers(res.data.user)
-        })
+        const users = response.data.user;
+        const filteredUsers = users.filter(user=> user._id != loggedInUserId)
+        setUsers(filteredUsers)
+    }
+
+    useEffect(()=> {
+        filteredList()
     }, [filter])
+
+
 
 
     return (
