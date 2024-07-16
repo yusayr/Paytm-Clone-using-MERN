@@ -50,7 +50,8 @@ router.post("/signup", async (req, res) => {
 
         return res.json({
             msg: "Post request successful",
-            token: token
+            token: token,
+            userId: userId
         })
     }
     catch (err) {
@@ -87,6 +88,7 @@ router.post("/signin", async (req, res) => {
         }, JWT_SECRET_KEY);
 
         return res.json({
+            userId: user._id,
             token: token,
             message: "Successfully signed in"
         })

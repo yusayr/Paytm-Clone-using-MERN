@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { useState } from "react"
 import { Button } from "./Button"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export const Users = () => {
     const [users, setUsers] = useState([])
@@ -13,6 +14,7 @@ export const Users = () => {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
+            
         })
         .then(res=> {
             setUsers(res.data.user)
@@ -37,11 +39,13 @@ export const Users = () => {
 }
 
 function User({ user }) {
+    const navigate = useNavigate()
+
     return <div className="flex justify-between">
         <div className="flex">
             <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-1">
                 <div className="flex flex-col justify-center h-full text-xl">
-                    {user.firstName[0]}
+                    {user.firstName[0].toUpperCase()}
                 </div>
 
             </div>
@@ -53,8 +57,9 @@ function User({ user }) {
         </div>
 
         <div className="flex flex-col justify-center h-full">
-            <Button label = {"Send money"} />
+            <Button onClick={()=> navigate("/send?id=" + user._id + "&name=" + user.firstName)} label = {"Send money"} />
         </div>
+        {/* user._id means the id of the receiver that we et from the get request not the sender */}
 
     </div>
 }

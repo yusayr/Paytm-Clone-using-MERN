@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 //apply transactions here
 
 // to get user balance
-router.get("/balance", authMiddleware, async (req,res)=> {
+router.post("/balance", authMiddleware, async (req,res)=> {
     const userId = req.body.userId
 
     if (!userId) {

@@ -28,7 +28,8 @@ export default function Signup() {
             });
             if (response.status === 200) { // Check for successful signup
                 localStorage.setItem("token", response.data.token);
-                console.log(response.data.token);
+                localStorage.setItem("userId", response.data.userId)
+                console.log(response.data.userId);
                 navigate("/dashboard");
             } else {
                 console.log('Signup failed:', response.data.message);
