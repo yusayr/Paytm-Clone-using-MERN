@@ -10,7 +10,6 @@ export const Users = () => {
     const loggedInUserId = localStorage.getItem("userId")
 
     const filteredList = async() => {
-        const filter = "";
         const token = localStorage.getItem("token")
         const response = await axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
             headers: {

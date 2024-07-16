@@ -51,7 +51,8 @@ router.post("/signup", async (req, res) => {
         return res.json({
             msg: "Post request successful",
             token: token,
-            userId: userId
+            userId: userId,
+            username: username,
         })
     }
     catch (err) {
@@ -77,8 +78,10 @@ router.post("/signin", async (req, res) => {
         })
     }
 
+    const username = req.body.username;
+
     const user = await User.findOne({
-        username: req.body.username,
+        username: username,
         password: req.body.password
     })
 
@@ -89,6 +92,7 @@ router.post("/signin", async (req, res) => {
 
         return res.json({
             userId: user._id,
+            username: username,
             token: token,
             message: "Successfully signed in"
         })

@@ -13,7 +13,6 @@ export default function Signin() {
   const [password, setPassword] = useState("")
   const navigate = useNavigate()
 
-
   const handleSignin = async() => {
     try {
       const response = await axios.post("http://localhost:3000/api/v1/user/signin",{
@@ -23,6 +22,7 @@ export default function Signin() {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId)
+        localStorage.setItem("username", response.data.username)
         navigate("/dashboard")
       }
     }
