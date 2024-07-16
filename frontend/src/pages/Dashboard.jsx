@@ -11,6 +11,7 @@ export default function Dashboard() {
     const [balance, setBalance] = useState(0)
     const token = useAuth();
     const navigate = useNavigate()
+    const [username, setUsername] = useState("") 
 
 
 const getBalance = async() => {
@@ -25,6 +26,9 @@ const getBalance = async() => {
             })
             const roundedBalance = Number(response.data.balance).toFixed(2);
             setBalance(roundedBalance)
+            const firstLetter = response.data.username[0].toUpperCase();
+            setUsername(firstLetter)
+            console.log(response.data.username)
         }
         catch(err) {
             console.log(err)
@@ -41,7 +45,7 @@ const getBalance = async() => {
 
     return (
     <div className="p-10">
-        <AppBar />
+        <AppBar username={username} />
         <Balance value={balance} />
         <Users />
     </div>

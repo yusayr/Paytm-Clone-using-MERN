@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-export function AppBar() {
-    const navigate = useNavigate()
-    const username = localStorage.getItem("username")
+export function AppBar({username}) {
+    const navigate = useNavigate();
 
     function handleLogout() {
         localStorage.removeItem("token");
@@ -20,7 +19,7 @@ export function AppBar() {
             </div>
             <div className="rounded-full h-12 w-12 bg-slate-200 flex items-center justify-center mt-1 ml-2"> {/* Adjust margin and ensure items are centered */}
                 <div className="text-xl">
-                    {username[0].toUpperCase()}
+                    {username}
                 </div>
             </div>
         </div>

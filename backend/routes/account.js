@@ -8,7 +8,7 @@ const mongoose = require("mongoose")
 
 // to get user balance
 router.post("/balance", authMiddleware, async (req,res)=> {
-    const userId = req.body.userId
+    const userId = req.body.userId;
 
     if (!userId) {
         res.status(400).json({
@@ -26,7 +26,8 @@ router.post("/balance", authMiddleware, async (req,res)=> {
         }
     
         res.json({
-            balance : account.balance
+            balance : account.balance,
+            username: account.username
         })
     }
     catch(err) {
