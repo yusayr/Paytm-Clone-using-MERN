@@ -11,7 +11,7 @@ export const Users = () => {
 
     const filteredList = async() => {
         const token = localStorage.getItem("token")
-        const response = await axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
+        const response = await axios.get("https://paytm-backend-taupe.vercel.app/api/v1/user/bulk?filter=" + filter, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
