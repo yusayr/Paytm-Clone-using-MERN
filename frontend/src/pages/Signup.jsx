@@ -20,7 +20,7 @@ export default function Signup() {
 
     const signupFunction = async() => {
         try {
-            const response = await axios.post("https://paytm-clone-using-mern-1.onrender.com/api/v1/user/signup", {
+            const response = await axios.post("https://paytm-backend-taupe.vercel.app/api/v1/user/signup", {
                 username,
                 firstName,
                 lastName,

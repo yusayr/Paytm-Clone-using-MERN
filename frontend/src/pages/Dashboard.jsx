@@ -16,7 +16,7 @@ export default function Dashboard() {
 
 const getBalance = async() => {
         try {
-            const response =await axios.post("https://paytm-clone-using-mern-1.onrender.com/api/v1/account/balance", 
+            const response =await axios.post("https://paytm-backend-taupe.vercel.app/api/v1/account/balance", 
                 {
                     userId: localStorage.getItem("userId")
                 },{
